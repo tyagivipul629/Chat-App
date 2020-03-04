@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login page</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="login2.css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet"> 
+	<style>
+    
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>	
+	<script type="text/javascript">
+            $(function(){				
+                $('#submitbut').on('click',function(event){
+             //   	console.log('submitbutton clicked!!');
+                	var obj={};
+                	var usrnm=$('#usernm').val();
+                	var passwrd=$('#passwd').val();
+                	obj.usrnm=usrnm;
+                	obj.passwrd=passwrd;
+                	if($('#submitbut').text()!='Sign Up')
+                 	{$.ajax({
+						type: 'POST',
+						dataType: 'json',
+						data: obj,
+                        url: '/userlogin',			
+                        success: function(response) {
+                        	    if(response.status=='failed')
+                        	    {
+                        	    	alert(response.message);
+                        	    }
+                        	    else{
+                        	    	window.open(response.link,"_self");
+                        	    }
+                        }
+                    });
+             		}
+                });	
+                $('#signupbut').on('click',function(){
+                	var obj={};
+                	var usrnm=$('#usernm').val();
+                	var passwrd=$('#passwd').val();
+                	obj.usrnm=usrnm;
+                	obj.passwrd=passwrd;
+                 	$.ajax({
+						type: 'POST',
+						dataType: 'json',
+						data: obj,
+                        url:'/signup',			
+                        success: function(response) {
+               //         		console.log(response);
+                        	    if(response.status=='success')
+                        	    {   
+                        	    	alert(response.message);
+                        	    	
+
+                        	    }
+                        	    else{
+                        	    	alert(response.message);
+                        	    }
+                        }
+                    });
+		
+            });
+                
+            });
+        </script>	
+</head>
+<body>
+	<div class="color-change-3x"></div>
+	<div class="login-box">
+    <img src="avatar.png" class="avatar">
+        <h1 class="login">Login Here</h1>
+            <p class="login">Username</p>
+            <input type="text" name="username" placeholder="Enter Username" id="usernm" required>
+            <p class="login">Password</p>
+            <input type="password" name="password" placeholder="Enter Password" id="passwd" required>
+            <input type="submit" name="submit" value="Log In"id="submitbut" class="login"></input>
+            <input type="submit" name="submit" value="Sign Up"id="signupbut" class="login"></input>
+            <a href="https://vipul-node-app.herokuapp.com/forget_password" class="login">Forget Password</a>    
+        </div>
+    
+    </body>
+</body>
+</html>

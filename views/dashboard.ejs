@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>chat application</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<h1 style="color: red;font-size: 80px;text-align:center;" id="username"><%= username%></h1>
+<input type="text" id="m"/ placeholder="Enter message">
+<input type="text" id="userid"/ placeholder="Enter receiver name">
+<select id="algo-list">
+<option value="substitution">Substitution</option>
+<option value="vigenere">Vigenere</option>
+<option value="boolean_substitution">Boolean substitution</option>
+</select>
+<button id="send">Send</button>
+<ul id="messages" style="list-style-type: none;"></ul>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script>
+$("document").ready(function(){
+var socket=io.connect('http://52.14.161.145/user',{query:"loggeduser="+$('#username').text()});
+$("#send").on('click',function(){
+/*if($('#algo-list').val()=='substitution'&&$('#m').val().length<50)
+{alert("Message length should be greater than 50");}
+if($('#algo-list').val()=='vigenere'&&$('#m').val()<35)
+{alert("Message length should be greater than 35!");}*/
+socket.emit('chat message',{msg:$('#m').val(),id:$('#userid').val(),sender:$('#username').text(),algo:$('#algo-list').val()});
+$('#messages').append($('<li>').text($('#m').val()));
+});
+socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').html("<div><span>"+msg.message+"</span><br><span>From:"+msg.sender+"</span></div>"));
+    });
+});
+</script>	</html>
